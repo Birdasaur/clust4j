@@ -73,7 +73,7 @@ public class MatrixFormatter extends TableFormatter {
     static Object[] doubleToObj(double[] d) {
     	final Object[] o = new Object[d.length];
     	for(int i = 0; i < o.length; i++)
-    		o[i] = (Object)new Double(d[i]);
+    		o[i] = (Object)d[i];
     	return o;
     }
 }

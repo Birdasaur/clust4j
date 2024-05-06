@@ -28,7 +28,7 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Level;
 import org.junit.Test;
 
 import com.clust4j.log.Log.LogWrapper;
@@ -144,7 +144,7 @@ public class LogTest {
 		}
 		
 		// Reset it
-		Log._logger.setLevel(orig);
+		Log._logger.atLevel(orig);
 		
 		/*
 		 * Coverage for flagging

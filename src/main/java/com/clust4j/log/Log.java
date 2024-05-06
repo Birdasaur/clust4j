@@ -22,9 +22,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.core.LoggerContext;
 
 /**
  * A wrapper class for log4j adapted heavily from 0XData H2O's logger class
@@ -335,7 +336,7 @@ public abstract class Log {
 	/**
 	 * The main logger...
 	 */
-	protected static org.apache.log4j.Logger _logger = null;
+	protected static org.apache.logging.log4j.Logger _logger = null;
 	
 	
 	public static String getLogDir() {
@@ -352,7 +353,7 @@ public abstract class Log {
 		return getLogPathFileNameStem() + "-debug.log";
 	}
 	
-	private static org.apache.log4j.Logger getLog4jLogger() {
+	private static org.apache.logging.log4j.Logger getLog4jLogger() {
 		return _logger;
 	}
 	
@@ -363,63 +364,63 @@ public abstract class Log {
 	    // clust4j-wide logging
 	    p.setProperty("log4j.rootLogger", "TRACE, R1, R2, R3, R4, R5, R6");
 
-	    p.setProperty("log4j.appender.R1",                          "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.R1",                          "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.R1.Threshold",                "TRACE");
 	    p.setProperty("log4j.appender.R1.File",                     logPathFileName + "-1-trace.log");
 	    p.setProperty("log4j.appender.R1.MaxFileSize",              "1MB");
 	    p.setProperty("log4j.appender.R1.MaxBackupIndex",           "3");
-	    p.setProperty("log4j.appender.R1.layout",                   "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.R1.layout",                   "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.R1.layout.ConversionPattern", "%m%n");
 
-	    p.setProperty("log4j.appender.R2",                          "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.R2",                          "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.R2.Threshold",                "DEBUG");
 	    p.setProperty("log4j.appender.R2.File",                     logPathFileName + "-2-debug.log");
 	    p.setProperty("log4j.appender.R2.MaxFileSize",              "3MB");
 	    p.setProperty("log4j.appender.R2.MaxBackupIndex",           "3");
-	    p.setProperty("log4j.appender.R2.layout",                   "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.R2.layout",                   "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.R2.layout.ConversionPattern", "%m%n");
 
-	    p.setProperty("log4j.appender.R3",                          "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.R3",                          "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.R3.Threshold",                "INFO");
 	    p.setProperty("log4j.appender.R3.File",                     logPathFileName + "-3-info.log");
 	    p.setProperty("log4j.appender.R3.MaxFileSize",              "2MB");
 	    p.setProperty("log4j.appender.R3.MaxBackupIndex",           "3");
-	    p.setProperty("log4j.appender.R3.layout",                   "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.R3.layout",                   "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.R3.layout.ConversionPattern", "%m%n");
 
-	    p.setProperty("log4j.appender.R4",                          "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.R4",                          "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.R4.Threshold",                "WARN");
 	    p.setProperty("log4j.appender.R4.File",                     logPathFileName + "-4-warn.log");
 	    p.setProperty("log4j.appender.R4.MaxFileSize",              "256KB");
 	    p.setProperty("log4j.appender.R4.MaxBackupIndex",           "3");
-	    p.setProperty("log4j.appender.R4.layout",                   "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.R4.layout",                   "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.R4.layout.ConversionPattern", "%m%n");
 
-	    p.setProperty("log4j.appender.R5",                          "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.R5",                          "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.R5.Threshold",                "ERROR");
 	    p.setProperty("log4j.appender.R5.File",                     logPathFileName + "-5-error.log");
 	    p.setProperty("log4j.appender.R5.MaxFileSize",              "256KB");
 	    p.setProperty("log4j.appender.R5.MaxBackupIndex",           "3");
-	    p.setProperty("log4j.appender.R5.layout",                   "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.R5.layout",                   "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.R5.layout.ConversionPattern", "%m%n");
 
-	    p.setProperty("log4j.appender.R6",                          "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.R6",                          "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.R6.Threshold",                "FATAL");
 	    p.setProperty("log4j.appender.R6.File",                     logPathFileName + "-6-fatal.log");
 	    p.setProperty("log4j.appender.R6.MaxFileSize",              "256KB");
 	    p.setProperty("log4j.appender.R6.MaxBackupIndex",           "3");
-	    p.setProperty("log4j.appender.R6.layout",                   "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.R6.layout",                   "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.R6.layout.ConversionPattern", "%m%n");
 
 	    // HTTPD logging
 	    p.setProperty("log4j.logger.water.api.RequestServer",       "TRACE, HTTPD");
 
-	    p.setProperty("log4j.appender.HTTPD",                       "org.apache.log4j.RollingFileAppender");
+	    p.setProperty("log4j.appender.HTTPD",                       "org.apache.logging.log4j.RollingFileAppender");
 	    p.setProperty("log4j.appender.HTTPD.Threshold",             "TRACE");
 	    p.setProperty("log4j.appender.HTTPD.File",                  logPathFileName + "-httpd.log");
 	    p.setProperty("log4j.appender.HTTPD.MaxFileSize",           "1MB");
 	    p.setProperty("log4j.appender.HTTPD.MaxBackupIndex",        "3");
-	    p.setProperty("log4j.appender.HTTPD.layout",                "org.apache.log4j.PatternLayout");
+	    p.setProperty("log4j.appender.HTTPD.layout",                "org.apache.logging.log4j.PatternLayout");
 	    p.setProperty("log4j.appender.HTTPD.layout.ConversionPattern", "%m%n");
 
 	    // Turn down the logging for some class hierarchies.
@@ -436,21 +437,27 @@ public abstract class Log {
 		//     p.setProperty("log4j.appender.R1.layout.ConversionPattern", "%p %C %m%n");
 	}
 	
-	private static org.apache.log4j.Logger createLog4jLogger(String logDirParent) {
+	private static org.apache.logging.log4j.Logger createLog4jLogger(String logDirParent) {
 		synchronized (com.clust4j.log.Log.class) {
 			// H2O API is synchronized here... this is not:
 			if(null != _logger)
 				return _logger;
-			
+// import org.apache.logging.log4j.core.LoggerContext;
 			String l4jprops = System.getProperty("log4j.properties");
-			if(null != l4jprops)
-				PropertyConfigurator.configure(l4jprops);
-			
-			else {
-				java.util.Properties p = new java.util.Properties();
-				setLog4jProperties(logDirParent, p);
-				PropertyConfigurator.configure(p);
-			}
+                        LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
+			if(null != l4jprops) {
+                            //PropertyConfigurator.configure(l4jprops);
+                            File file = new File(l4jprops);
+                            // this will force a reconfiguration
+                            context.setConfigLocation(file.toURI());
+                        } else {
+                            java.util.Properties p = new java.util.Properties();
+                            setLog4jProperties(logDirParent, p);
+//				PropertyConfigurator.configure(p);
+//                            context.setConfiguration()
+                            //@TODO SMP
+
+                        }
 		}
 		
 		return _logger = LogManager.getLogger(Log.class.getName());
@@ -470,7 +477,7 @@ public abstract class Log {
 				throw new IllegalArgumentException("Illegal log level: "+ log_level);
 		}
 		
-		_logger.setLevel(l);
+		_logger.atLevel(l);
 		String inf = "Set log level to " + l;
 		System.out.println(inf);
 		_logger.info(inf);
@@ -485,7 +492,7 @@ public abstract class Log {
 	static volatile private ArrayList<LogEvent> startupLogEvents = new ArrayList<LogEvent>();
 	
 	
-	protected static void log0(org.apache.log4j.Logger l4j, LogEvent e) {
+	protected static void log0(org.apache.logging.log4j.Logger l4j, LogEvent e) {
 		String s = e.toString();
 		
 		if(e.type == Type.FATAL)
@@ -507,7 +514,7 @@ public abstract class Log {
 	
 	
 	private static void write0(final LogEvent e, final boolean printOnOut) {
-		org.apache.log4j.Logger l4j = getLog4jLogger();
+		org.apache.logging.log4j.Logger l4j = getLog4jLogger();
 		
 		// If we don't have a logger yet, and we haven't created one, build one...
 		//synchronized(Event.class) {

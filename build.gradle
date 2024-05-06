@@ -1,74 +1,87 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'jacoco'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-archivesBaseName = 'clust4j'
-version = '1.2.4-SNAPSHOT'
-
-
-
-compileJava {
-    options.debug = true
+plugins {
+    id 'java'
+    id 'idea'
+//    id 'eclipse'
+//    id 'jacoco'
+    id 'org.gradlex.extra-java-module-info' version '1.8'
 }
+
+version = new Date().format('yyyy.MM.dd', TimeZone.getTimeZone('UTC'))
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_20 // Use this instead of  toolchain.* if you want to manually setup your own JDK
+    targetCompatibility = JavaVersion.VERSION_20 // Use this instead of  toolchain.* if you want to manually setup your own JDK
+    //toolchain.languageVersion = JavaLanguageVersion.of(21)
+    //toolchain.vendor = JvmVendorSpec.ADOPTIUM
+    modularity.inferModulePath.set(true)
+}
+compileJava {
+    doFirst {
+        println "Compiler Args: $options.compilerArgs"
+        println "Runtime Classpath: ${sourceSets.main.runtimeClasspath.asPath.split(System.getProperty('path.separator'))}"
+    }
+}
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
+tasks.register('debug', JavaExec) {
+    dependsOn 'classes'
+    mainClass = mainClassPath
+    classpath = sourceSets.main.runtimeClasspath
+    debug true
+}
+
 
 repositories {
     mavenCentral()
-    jcenter()
+    //jcenter()
 }
 
-jar {
-    baseName = 'clust4j'
-    version = version
-
-    // Load all of the dependencies into the jar
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+// https://youtrack.jetbrains.com/issue/IDEA-222172
+idea {
+    module {
+        inheritOutputDirs = true
+        downloadJavadoc = true
+        downloadSources = true
     }
 }
 
-test {
-    // Only include the TestSuite class
-    include 'com/clust4j/TestSuite*'
-    // Exclude all in load package
-    exclude 'com/clust4j/load/**'
-
-    // Need the heap space for some larger tests...
-    maxHeapSize = "512m"
-    jvmArgs '-XX:MaxPermSize=256m'
-
-    beforeTest { descriptor ->
-      logger.lifecycle("Running test: " + descriptor)
-    }
-}
-
-javadoc {
-    source += sourceSets.main.allJava
-    classpath += configurations.compile
+tasks.named('wrapper', Wrapper) {
+    gradleVersion = '8.7'
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 dependencies {
-    compile 'log4j:log4j:1.2.17'
-    compile 'org.apache.commons:commons-math3:3.6.1'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    testCompile 'junit:junit:4.+'
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.23.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.2'
-}
-
-
-/*
- * Settings for jacoco coverage report
- */
-jacocoTestReport {
-    reports {
-        xml.enabled = true
-        html.enabled = true
+// Make sure every single dependency is modularized.
+// Alternative is to use org.javamodularity.moduleplugin but
+// it doesn't yield the same quality of results.
+extraJavaModuleInfo {
+    // Avoid automatic modules
+    failOnAutomaticModules.set(true)
+    module('org.apache.commons:commons-math3', 'org.apache.commons.math3') {
+        exportAllPackages()
+        patchRealModule()
     }
-}
+    module('org.apache.commons:commons-lang3', 'org.apache.commons.lang3') {
+        exportAllPackages()
+        patchRealModule()
+    }
+   module('org.apache.logging.log4j:log4j-api', 'org.apache.logging.log4j.api') {
+        exportAllPackages()
+        patchRealModule()
+    }
+   module('org.apache.logging.log4j:log4j-core', 'org.apache.logging.log4j.core') {
+        exportAllPackages()
+        patchRealModule()
+    }
 
-// needed for Travis CI
-check.dependsOn jacocoTestReport
+}

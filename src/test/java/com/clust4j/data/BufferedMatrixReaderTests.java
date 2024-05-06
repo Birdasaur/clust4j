@@ -832,7 +832,7 @@ public class BufferedMatrixReaderTests {
 		boolean a = false;
 		double[][] g = MatUtils.randomGaussian(500, 150); // make smaller for travis CI
 		Object[] o = fromDoubleArr(g);
-		o[15] = new Integer(1);
+		o[15] =1;
 		writeCSV(o);
 		
 		try {

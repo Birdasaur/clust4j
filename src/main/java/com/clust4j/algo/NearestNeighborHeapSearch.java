@@ -293,7 +293,7 @@ abstract class NearestNeighborHeapSearch implements java.io.Serializable {
 	// Tested: passing
 	public static class MutableDouble implements Comparable<Double>, java.io.Serializable {
 		private static final long serialVersionUID = -4636023903600763877L;
-		public Double value = new Double(0);
+		public Double value = 0.0;
 		
 		MutableDouble() { }
 		MutableDouble(Double value) {

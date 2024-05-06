@@ -771,7 +771,7 @@ public class NNHSTests {
 		
 		assertTrue(heap.data[0].equals(new NodeHeapData(1.0,0,0)));
 		assertTrue(heap.data[0].equals(h));
-		assertFalse(heap.data[0].equals(new Integer(1)));
+		assertFalse(heap.data[0].equals(1));
 		assertTrue(heap.n == 4);
 		
 		assertTrue(heap.pop().equals(h));
