@@ -5,4 +5,5 @@ module com.clust4j {
     requires org.apache.logging.log4j.core;
     requires org.apache.logging.log4j;
     exports com.clust4j;
+    exports com.clust4j.algo;
 }
